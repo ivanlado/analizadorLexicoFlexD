@@ -1,0 +1,26 @@
+
+
+INTRUCCIONES PARA LA EJECUCIÓN
+
+Para la ejecución hay un makefile.
+Ejecutando el comando "make" se genera el ejecutable con el nombre "ejecutable.out".
+Para ejecutarlo, hacer "./ejecutable.out".
+Si ademas se quiere usar otro fichero distinto a regression.d, poner "./ejecutable.out nombreNuevoFichero".
+Si se quiere ejecutar con valgrind, hacer "valgrind ./ejecutable.out".
+
+
+OBSERVACIONES SOBRE LA PRACTICA
+
+Con respecto a la implementación de la práctica, he usado memoria dinámica para los lexemas. No obstante, sí que es cierto que, como
+estamos fijando el tamaño máximo de lexema al tamaño de bloque, bastaría con tener una string estática en el sintáctico, y pasarla al
+léxico, y que este se la pase al sistema de entrada y que escriba en ella el lexema. Podemos hacer esto, porque al fin y al cabo, solo
+estamos usando el lexema en el momento imprimirlo. Por lo que solo estaremos usando 1 string a lo largo de toda la compilación. No obstante,
+para la TS de simbolos, como estamos guardando los distintos identificadores durante un cierto periodo de tiempo, quizás es más conveniente una
+reserva dinámica, así se aprovecha mejor la memoria, sobre todo en caso de que el tamaño de bloque sea grande.
+
+Aun así, el hecho de que se use memoria estática para guardar los lexema, hace que haya un mayor acoplamiento entre los analizadores y el sistema de entrada,
+lo cual puede no ser bueno. Además, en clase, cuando se debatió la eleccion el tipo de memoria para lexema, se descartó la estática porque no conociamos el
+tamaño del lexema, fue al final del todo cuando se habló de limitar el tamaño máximo del lexema en el sistema de entrada. Como el sistema de entrada debería estar
+desacoplado del analizador, finalmente me decanté por la memoria dinámica. Aún sí, soy consciente de que sería más eficiente usando memoria estática para los
+lexemas que no van a la tabla de símbolos.
+
