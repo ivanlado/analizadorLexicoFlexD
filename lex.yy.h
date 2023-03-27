@@ -211,7 +211,8 @@ extern char yytext[];
 #ifdef YY_HEADER_EXPORT_START_CONDITIONS
 #define INITIAL 0
 #define comentario 1
-#define nested 2
+#define comentarioE2 2
+#define nested 3
 
 #endif
 
@@ -465,9 +466,9 @@ extern int yylex (void);
 #undef yyTABLES_NAME
 #endif
 
-#line 79 "lex.l"
+#line 78 "lex.l"
 
 
-#line 472 "lex.yy.h"
+#line 473 "lex.yy.h"
 #undef yyIN_HEADER
 #endif /* yyHEADER_H */

@@ -1,6 +1,6 @@
-import std.stdio;
-import std.algorithm.iteration;
-import std.exception;
+/* lskjda */
+/* askdja *** sds*/
+/* askdja *** sds*/
 /+ nesye/+asda+/de+/
 "hola"
 'alsdasklda'

@@ -35,6 +35,7 @@ FLOAT3 {LEADINGDECIMAL}"."
 FLOAT {FLOAT1}|{FLOAT2}|{FLOAT3}
 
 %x comentario
+%x comentarioE2
 %x nested
 COMENTARIOSLINEA "//"[^\n]*
 INICIOCOMENTARIOBLOQUE "/*"
@@ -60,20 +61,18 @@ cast|double|enforce|foreach|import|int|return|void|while {return 600;}
 {INT} return COMPLEXICO_INT;
 {FLOAT} return COMPLEXICO_FLOAT;
 {EXP} return 4444444;
-{LEADINGDECIMAL} return 7666666;
+{LEADINGDECIMAL} return 76666;
 {COMENTARIOSLINEA} return 99999;
 
 
 {INICIOCOMENTARIOBLOQUE} {BEGIN(comentario);}
-<comentario>[^*]*
-<comentario>"*"+[^*/\n]
-<comentario>{FINCOMENTARIOBLOQUE} {BEGIN(INITIAL); return 8888;}
+<comentario>[^*]* 
+<comentario>"*" BEGIN(comentarioE2);
+<comentarioE2>"/" {BEGIN(INITIAL); return 8888;} 
+<comentarioE2>"*" 
+<comentarioE2>[^*/] BEGIN(comentario);
 
-{INICIOCOMENTARIONESTED} {BEGIN(nested); nestedCount++; printf("nested inicio %d\n", nestedCount);}
-<nested>{INICIOCOMENTARIONESTED} nestedCount++; printf("nested inicio %d\n", nestedCount);
-<nested>[^+]*
-<nested>"+"+[^+/\n]
-<nested>{FINCOMENTARIONESTED} {nestedCount--; printf("nested fin %d\n", nestedCount); if(!nestedCount){BEGIN(INITIAL); return 8888;}}
+
 
 
 %%
