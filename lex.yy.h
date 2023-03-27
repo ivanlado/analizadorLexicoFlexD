@@ -214,6 +214,7 @@ extern char yytext[];
 #define comentarioE2 2
 #define comentarioNested 3
 #define comentarioNestedE2 4
+#define comentarioNestedE3 5
 
 #endif
 
@@ -470,6 +471,6 @@ extern int yylex (void);
 #line 110 "lex.l"
 
 
-#line 474 "lex.yy.h"
+#line 475 "lex.yy.h"
 #undef yyIN_HEADER
 #endif /* yyHEADER_H */

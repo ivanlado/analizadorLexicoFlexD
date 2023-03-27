@@ -23,13 +23,13 @@ void inicializarTS() {
 
     // Se añaden en la tabla de simbolos, reservando memoria para cada palabra dinamicamente
     for (int i = 0; i < sizeof(keywords) / sizeof(compLexico); i++) {
-        char * keyword = keywords[i].lexema;
-        int lexLen = (strlen(keyword)+1)*sizeof(char);
-        // Se reserva memoria
-        char * lexema = (char *) malloc(lexLen);
-        // Se copia de la variable estatica a la dinamica
-        strncpy(lexema, keyword, lexLen);
-        insertarTS(lexema, keywords[i].comp);
+        // char * keyword = keywords[i].lexema;
+        // int lexLen = (strlen(keyword)+1)*sizeof(char);
+        // // Se reserva memoria
+        // char * lexema = (char *) malloc(lexLen);
+        // // Se copia de la variable estatica a la dinamica
+        // strncpy(lexema, keyword, lexLen);
+        insertarTS(keywords[i].lexema, keywords[i].comp);
     }
 
 }

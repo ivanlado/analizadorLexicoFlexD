@@ -44,6 +44,7 @@ FLOAT {FLOAT1}|{FLOAT2}|{FLOAT3}
 %x comentarioE2
 %x comentarioNested
 %x comentarioNestedE2
+%x comentarioNestedE3
 COMENTARIOSLINEA "//"[^\n]*
 INICIOCOMENTARIOBLOQUE "/*"
 FINCOMENTARIOBLOQUE "*/"
@@ -64,9 +65,6 @@ FINCOMENTARIONESTED "+/"
         if(buscarTS(&comp)){
             return comp.comp;
         } else{
-            int lexLen = (strlen(yytext) + 1) * sizeof(char);
-            comp.lexema = (char *) malloc(lexLen);
-            strncpy(comp.lexema, yytext, lexLen);
             insertarTS(yytext, COMPLEXICO_KEYWORD_INDENTIFICADOR);
             comp.comp = COMPLEXICO_KEYWORD_INDENTIFICADOR;
             return comp.comp;
@@ -96,12 +94,15 @@ FINCOMENTARIONESTED "+/"
 <comentarioE2>[^*/] BEGIN(comentario);
 
 {INICIOCOMENTARIONESTED} {BEGIN(comentarioNested); nestedCount++;}
-<comentarioNested>{INICIOCOMENTARIONESTED} nestedCount++;
 <comentarioNested>[^+/]* 
 <comentarioNested>"+" BEGIN(comentarioNestedE2);
+<comentarioNested>"/" BEGIN(comentarioNestedE3);
 <comentarioNestedE2>"/" {nestedCount--; if(!nestedCount){BEGIN(INITIAL);} else{BEGIN(comentarioNested);}} 
 <comentarioNestedE2>"+" 
 <comentarioNestedE2>[^+/] BEGIN(comentarioNested);
+<comentarioNestedE3>"/"
+<comentarioNestedE3>[^+/] BEGIN(comentarioNested);
+<comentarioNestedE3>"+" nestedCount++; BEGIN(comentarioNested);
 
 
 
