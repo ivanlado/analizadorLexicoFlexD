@@ -73,10 +73,11 @@ cast|double|enforce|foreach|import|int|return|void|while {return 600;}
 <comentarioE2>"*" 
 <comentarioE2>[^*/] BEGIN(comentario);
 
-{INICIOCOMENTARIONESTED} {BEGIN(comentarioNested);}
-<comentarioNested>[^+]* 
+{INICIOCOMENTARIONESTED} {BEGIN(comentarioNested); nestedCount++;}
+<comentarioNested>{INICIOCOMENTARIONESTED} nestedCount++;
+<comentarioNested>[^+/]* 
 <comentarioNested>"+" BEGIN(comentarioNestedE2);
-<comentarioNestedE2>"/" {BEGIN(INITIAL); return 7777;} 
+<comentarioNestedE2>"/" {nestedCount--; if(!nestedCount){BEGIN(INITIAL); return 7777;} else{BEGIN(comentarioNested);}} 
 <comentarioNestedE2>"+" 
 <comentarioNestedE2>[^+/] BEGIN(comentarioNested);
 
