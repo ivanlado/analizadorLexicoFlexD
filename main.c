@@ -34,6 +34,8 @@ void finalizacion(){
     fclose(yyin);
     // Se finaliza la ts
     finalizarTS();
+
+    yylex_destroy();
 }
 
 
