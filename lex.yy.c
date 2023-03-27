@@ -866,8 +866,12 @@ YY_RULE_SETUP
         if(buscarTS(&comp)){
             return comp.comp;
         } else{
-            insertarTS(yytext, COMPLEXICO_KEYWORD_INDENTIFICADOR);
+            int lexLen = (strlen(yytext) + 1) * sizeof(char);
+            comp.lexema = (char *) malloc(lexLen);
+            strncpy(comp.lexema, yytext, lexLen);
+            insertarTS(comp.lexema, COMPLEXICO_KEYWORD_INDENTIFICADOR);
             comp.comp = COMPLEXICO_KEYWORD_INDENTIFICADOR;
+
             return comp.comp;
         }
 
@@ -875,145 +879,145 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 75 "lex.l"
+#line 79 "lex.l"
 {return (int) *yytext;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 76 "lex.l"
+#line 80 "lex.l"
 {return COMPLEXICO_MASMAS;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 77 "lex.l"
+#line 81 "lex.l"
 {return COMPLEXICO_MASIGUAL;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 78 "lex.l"
+#line 82 "lex.l"
 {return COMPLEXICO_IGUALIGUAL;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 80 "lex.l"
+#line 84 "lex.l"
 return COMPLEXICO_STRING;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 82 "lex.l"
+#line 86 "lex.l"
 return COMPLEXICO_INT;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 83 "lex.l"
+#line 87 "lex.l"
 return COMPLEXICO_FLOAT;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 84 "lex.l"
+#line 88 "lex.l"
 return 4444444;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 85 "lex.l"
+#line 89 "lex.l"
 return 76666;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 86 "lex.l"
+#line 90 "lex.l"
 /*ignorar*/
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 89 "lex.l"
+#line 93 "lex.l"
 {BEGIN(comentario);}
 	YY_BREAK
 case 14:
 /* rule 14 can match eol */
 YY_RULE_SETUP
-#line 90 "lex.l"
+#line 94 "lex.l"
 
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 91 "lex.l"
+#line 95 "lex.l"
 BEGIN(comentarioE2);
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 92 "lex.l"
+#line 96 "lex.l"
 {BEGIN(INITIAL);} 
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 93 "lex.l"
+#line 97 "lex.l"
 
 	YY_BREAK
 case 18:
 /* rule 18 can match eol */
 YY_RULE_SETUP
-#line 94 "lex.l"
+#line 98 "lex.l"
 BEGIN(comentario);
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 96 "lex.l"
+#line 100 "lex.l"
 {BEGIN(comentarioNested); nestedCount++;}
 	YY_BREAK
 case 20:
 /* rule 20 can match eol */
 YY_RULE_SETUP
-#line 97 "lex.l"
+#line 101 "lex.l"
 
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 98 "lex.l"
+#line 102 "lex.l"
 BEGIN(comentarioNestedE2);
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 99 "lex.l"
+#line 103 "lex.l"
 BEGIN(comentarioNestedE3);
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 100 "lex.l"
+#line 104 "lex.l"
 {nestedCount--; if(!nestedCount){BEGIN(INITIAL);} else{BEGIN(comentarioNested);}} 
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 101 "lex.l"
+#line 105 "lex.l"
 
 	YY_BREAK
 case 25:
 /* rule 25 can match eol */
 YY_RULE_SETUP
-#line 102 "lex.l"
+#line 106 "lex.l"
 BEGIN(comentarioNested);
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 103 "lex.l"
+#line 107 "lex.l"
 
 	YY_BREAK
 case 27:
 /* rule 27 can match eol */
 YY_RULE_SETUP
-#line 104 "lex.l"
+#line 108 "lex.l"
 BEGIN(comentarioNested);
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 105 "lex.l"
+#line 109 "lex.l"
 nestedCount++; BEGIN(comentarioNested);
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 110 "lex.l"
+#line 114 "lex.l"
 ECHO;
 	YY_BREAK
-#line 1017 "lex.yy.c"
+#line 1021 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(comentario):
 case YY_STATE_EOF(comentarioE2):
@@ -1956,7 +1960,7 @@ static int yy_flex_strlen (const char * s )
 	int n;
 	for ( n = 0; s[n]; ++n )
 		;
-
+yyalloc
 	return n;
 }
 #endif
@@ -1986,7 +1990,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 110 "lex.l"
+#line 114 "lex.l"
 
 
 

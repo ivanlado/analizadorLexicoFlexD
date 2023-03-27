@@ -65,8 +65,12 @@ FINCOMENTARIONESTED "+/"
         if(buscarTS(&comp)){
             return comp.comp;
         } else{
-            insertarTS(yytext, COMPLEXICO_KEYWORD_INDENTIFICADOR);
+            int lexLen = (strlen(yytext) + 1) * sizeof(char);
+            comp.lexema = (char *) malloc(lexLen);
+            strncpy(comp.lexema, yytext, lexLen);
+            insertarTS(comp.lexema, COMPLEXICO_KEYWORD_INDENTIFICADOR);
             comp.comp = COMPLEXICO_KEYWORD_INDENTIFICADOR;
+
             return comp.comp;
         }
 
