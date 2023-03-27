@@ -13,11 +13,17 @@ int nestedCount = 0;
 
 DIGITO [0-9]
 LETRA [a-zA-Z]
-ID {LETRA}({LETRA}|{DIGITO}|_)*
+
+IDSTART ({LETRA}|_)
+ID {IDSTART}({IDSTART}|{DIGITO})*
 IGNORAR [\n ]
-STRING (\"([^"]*)\")|(\'([^'']*)\')
-TOKENSIMPLE "/"|"."|"&"|"|"|"-"|"+"|"<"|">"|"!"|"("|")"|"["|"]"|"?"|","|";"|":"|"$"|"="|"*"|"%"|"^"|"~"|"@"|"#"
-TOKENDOBLE "++"|"+="|"=="
+STRING1 \"(.|"\"")*\"
+STRING2 \'(.|"\'")*\''
+STRING {STRING1}|{STRING2} 
+TOKENSIMPLE "/"|"."|"&"|"|"|"-"|"+"|"<"|">"|"!"|"("|")"|"["|"]"|"?"|","|";"|":"|"$"|"="|"*"|"%"|"^"|"~"|"@"|"#"|"{"|"}"
+TOKENDOBLEMASMAS "++"
+TOKENDOBLEMASIGUAL "+="
+TOKENDOBLEIGUALIGUAL "=="
 
 INTDECIMAL 0|[1-9][0-9_]*
 BINARIOS 0b[0-1_]*
@@ -56,6 +62,9 @@ cast|double|enforce|foreach|import|int|return|void|while {return 600;}
 {ID} {return COMPLEXICO_KEYWORD_INDENTIFICADOR;}
 
 {TOKENSIMPLE} {return (int) *yytext;}
+{TOKENDOBLEMASMAS} {return COMPLEXICO_MASMAS;}
+{TOKENDOBLEMASIGUAL} {return COMPLEXICO_MASIGUAL;}
+{TOKENDOBLEIGUALIGUAL} {return COMPLEXICO_IGUALIGUAL;}
 
 {STRING} return COMPLEXICO_STRING;
 
@@ -63,13 +72,13 @@ cast|double|enforce|foreach|import|int|return|void|while {return 600;}
 {FLOAT} return COMPLEXICO_FLOAT;
 {EXP} return 4444444;
 {LEADINGDECIMAL} return 76666;
-{COMENTARIOSLINEA} return 99999;
+{COMENTARIOSLINEA} /*ignorar*/
 
 
 {INICIOCOMENTARIOBLOQUE} {BEGIN(comentario);}
 <comentario>[^*]* 
 <comentario>"*" BEGIN(comentarioE2);
-<comentarioE2>"/" {BEGIN(INITIAL); return 8888;} 
+<comentarioE2>"/" {BEGIN(INITIAL);} 
 <comentarioE2>"*" 
 <comentarioE2>[^*/] BEGIN(comentario);
 
@@ -77,7 +86,7 @@ cast|double|enforce|foreach|import|int|return|void|while {return 600;}
 <comentarioNested>{INICIOCOMENTARIONESTED} nestedCount++;
 <comentarioNested>[^+/]* 
 <comentarioNested>"+" BEGIN(comentarioNestedE2);
-<comentarioNestedE2>"/" {nestedCount--; if(!nestedCount){BEGIN(INITIAL); return 7777;} else{BEGIN(comentarioNested);}} 
+<comentarioNestedE2>"/" {nestedCount--; if(!nestedCount){BEGIN(INITIAL);} else{BEGIN(comentarioNested);}} 
 <comentarioNestedE2>"+" 
 <comentarioNestedE2>[^+/] BEGIN(comentarioNested);
 
@@ -90,6 +99,6 @@ cast|double|enforce|foreach|import|int|return|void|while {return 600;}
 compLexico siguienteComponenteLexico(){
     compLexico comp;
     comp.comp = yylex();
-    comp.lexema = "kk";
+    comp.lexema = yytext;
     return comp;
 }
