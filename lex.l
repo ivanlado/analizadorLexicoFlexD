@@ -36,7 +36,8 @@ FLOAT {FLOAT1}|{FLOAT2}|{FLOAT3}
 
 %x comentario
 %x comentarioE2
-%x nested
+%x comentarioNested
+%x comentarioNestedE2
 COMENTARIOSLINEA "//"[^\n]*
 INICIOCOMENTARIOBLOQUE "/*"
 FINCOMENTARIOBLOQUE "*/"
@@ -71,6 +72,13 @@ cast|double|enforce|foreach|import|int|return|void|while {return 600;}
 <comentarioE2>"/" {BEGIN(INITIAL); return 8888;} 
 <comentarioE2>"*" 
 <comentarioE2>[^*/] BEGIN(comentario);
+
+{INICIOCOMENTARIONESTED} {BEGIN(comentarioNested);}
+<comentarioNested>[^+]* 
+<comentarioNested>"+" BEGIN(comentarioNestedE2);
+<comentarioNestedE2>"/" {BEGIN(INITIAL); return 7777;} 
+<comentarioNestedE2>"+" 
+<comentarioNestedE2>[^+/] BEGIN(comentarioNested);
 
 
 

@@ -212,7 +212,8 @@ extern char yytext[];
 #define INITIAL 0
 #define comentario 1
 #define comentarioE2 2
-#define nested 3
+#define comentarioNested 3
+#define comentarioNestedE2 4
 
 #endif
 
@@ -466,9 +467,9 @@ extern int yylex (void);
 #undef yyTABLES_NAME
 #endif
 
-#line 78 "lex.l"
+#line 86 "lex.l"
 
 
-#line 473 "lex.yy.h"
+#line 474 "lex.yy.h"
 #undef yyIN_HEADER
 #endif /* yyHEADER_H */
