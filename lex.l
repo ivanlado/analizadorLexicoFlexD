@@ -55,11 +55,24 @@ FINCOMENTARIONESTED "+/"
 %%
 
 
-cast|double|enforce|foreach|import|int|return|void|while {return 600;}
 
 {IGNORAR} /* ignorar*/
 
-{ID} {return COMPLEXICO_KEYWORD_INDENTIFICADOR;}
+{ID} {
+        compLexico comp;
+        comp.lexema = yytext;
+        if(buscarTS(&comp)){
+            return comp.comp;
+        } else{
+            int lexLen = (strlen(yytext) + 1) * sizeof(char);
+            comp.lexema = (char *) malloc(lexLen);
+            strncpy(comp.lexema, yytext, lexLen);
+            insertarTS(yytext, COMPLEXICO_KEYWORD_INDENTIFICADOR);
+            comp.comp = COMPLEXICO_KEYWORD_INDENTIFICADOR;
+            return comp.comp;
+        }
+
+}
 
 {TOKENSIMPLE} {return (int) *yytext;}
 {TOKENDOBLEMASMAS} {return COMPLEXICO_MASMAS;}
@@ -94,6 +107,8 @@ cast|double|enforce|foreach|import|int|return|void|while {return 600;}
 
 
 %%
+
+
 
 
 compLexico siguienteComponenteLexico(){

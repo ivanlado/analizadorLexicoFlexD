@@ -17,6 +17,7 @@ void destruye(lista *l) {
         (*l)->fin = ((*l)->fin)->sig;
         if((*l)->longitud >0 && (*l)->fin!=NULL){
             char * aux = (*l)->fin->elemento.lexema;
+            printf("Para ver %s\n", aux);
             free(aux);
         }
         free((*l)->inicio);
