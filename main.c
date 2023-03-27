@@ -13,7 +13,6 @@ int main(int argc, char **argv) {
     } else{
         nombreFichero = "regression.d";
     }
-    yyin = fopen("regression.d", "r");
     // Acciones de inicializacion
     inicializacion(nombreFichero);
     // Analisis sintactico
@@ -24,15 +23,15 @@ int main(int argc, char **argv) {
 }
 
 void inicializacion(char * nombreFichero){
+    // Se abre el fichero
+    yyin = fopen("regression.d", "r");
     //Se inicializa la ts
     inicializarTS();
-    // Se inicializa el sistema de entrada
-    // inicializarSistemaEntrada(nombreFichero);
 }
 
 void finalizacion(){
-    // Se finaliza el sistema de entrada
-    // finalizarSistemaEntrada();
+    // Se cierra el fichero
+    fclose(yyin);
     // Se finaliza la ts
     finalizarTS();
 }

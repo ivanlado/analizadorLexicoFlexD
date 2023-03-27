@@ -1960,7 +1960,7 @@ static int yy_flex_strlen (const char * s )
 	int n;
 	for ( n = 0; s[n]; ++n )
 		;
-yyalloc
+
 	return n;
 }
 #endif
