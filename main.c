@@ -1,5 +1,4 @@
 #include "sintactico.h"
-#include "sistemaEntrada.h"
 #include "ts.h"
 #include "lex.yy.h"
 

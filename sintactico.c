@@ -1,16 +1,14 @@
 #include <stdio.h>
-#include "lexico.h"
-#include "definiciones.h"
+#include "ts.h"
+#include "comun.h"
 
 
 void analizadorSintactico(){
     compLexico comp;
 
-    int kk;
-    int fin;
     do{
         // Se pide un componente lexico al analizador lexico
-        kk = yylex();
+        comp = siguienteComponenteLexico();
         // Se comprueba si se recibe el componente lexico EOF
         // fin = (comp.comp == EOF);
         // if(!fin){
@@ -22,6 +20,6 @@ void analizadorSintactico(){
         //     // Se recibe el componente lexico
         //     printf("Componente léxico EOF\n");
         // }
-        printf("%d \n", kk);
-    } while(kk);
+        printf("%d %s\n", comp.comp, comp.lexema);
+    } while(comp.comp);
 }

@@ -1,9 +1,15 @@
+
 %{
 #include <string.h>
+#include <stdio.h>
 #include "definiciones.h"
+#include "comun.h"
+#include "ts.h"
+int nestedCount = 0;
 %}
 
-%option noyywrap header-file="lex.yy.h" noinput nounput
+%array
+%option noyywrap header-file="lex.yy.h" noinput nounput 
 
 DIGITO [0-9]
 LETRA [a-zA-Z]
@@ -28,11 +34,18 @@ FLOAT2 {LEADINGDECIMAL}{EXP}
 FLOAT3 {LEADINGDECIMAL}"."
 FLOAT {FLOAT1}|{FLOAT2}|{FLOAT3}
 
+%x comentario
+%x nested
 COMENTARIOSLINEA "//"[^\n]*
-COMENTARIOSBLOQUE "/*"[^*/]*"*/"
+INICIOCOMENTARIOBLOQUE "/*"
+FINCOMENTARIOBLOQUE "*/"
+INICIOCOMENTARIONESTED "/+"
+FINCOMENTARIONESTED "+/"
+
 
 
 %%
+
 
 cast|double|enforce|foreach|import|int|return|void|while {return 600;}
 
@@ -46,11 +59,29 @@ cast|double|enforce|foreach|import|int|return|void|while {return 600;}
 
 {INT} return COMPLEXICO_INT;
 {FLOAT} return COMPLEXICO_FLOAT;
-{COMENTARIOSLINEA} return 88888888;
-{COMENTARIOSBLOQUE} return 99999999;
 {EXP} return 4444444;
-{FLOAT3} return 6666666666;
-{LEADINGDECIMAL} return 7666666666;
+{LEADINGDECIMAL} return 7666666;
+{COMENTARIOSLINEA} return 99999;
+
+
+{INICIOCOMENTARIOBLOQUE} {BEGIN(comentario);}
+<comentario>[^*]*
+<comentario>"*"+[^*/\n]
+<comentario>{FINCOMENTARIOBLOQUE} {BEGIN(INITIAL); return 8888;}
+
+{INICIOCOMENTARIONESTED} {BEGIN(nested); nestedCount++; printf("nested inicio %d\n", nestedCount);}
+<nested>{INICIOCOMENTARIONESTED} nestedCount++; printf("nested inicio %d\n", nestedCount);
+<nested>[^+]*
+<nested>"+"+[^+/\n]
+<nested>{FINCOMENTARIONESTED} {nestedCount--; printf("nested fin %d\n", nestedCount); if(!nestedCount){BEGIN(INITIAL); return 8888;}}
 
 
 %%
+
+
+compLexico siguienteComponenteLexico(){
+    compLexico comp;
+    comp.comp = yylex();
+    comp.lexema = "kk";
+    return comp;
+}
